@@ -1,3 +1,9 @@
+qmail-run (2.0.2-0.1) trusty; urgency=low
+
+  * increase softlimit for TLS changes
+
+ -- Ryan Buterbaugh <ryan@buterbaugh.org>  Sat, 13 Feb 2016 21:30:30 +0000
+
 qmail-run (2.0.2) unstable; urgency=low
 
   * Makefile: no longer install the (dummy) newaliases program.

@@ -1,7 +1,7 @@
 Source: qmail-run
 Section: mail
 Priority: extra
-Maintainer: Gerrit Pape <pape@smarden.org>
+Maintainer: Ryan Buterbaugh <ryan@buterbaugh.org>
 Standards-Version: 3.8.0.1
 
 Package: qmail-run
