@@ -1,0 +1,43 @@
+#!/usr/bin/make -f
+
+DIR=$(shell pwd)/debian/qmail-run
+
+build: deb-checkdir build-stamp
+build-stamp:
+	touch build-stamp
+
+clean: deb-checkdir deb-checkuid
+	rm -rf '$(DIR)'
+	rm -f build-stamp
+	rm -f debian/files
+
+install: deb-checkdir deb-checkuid build-stamp
+	rm -rf '$(DIR)'
+	$(MAKE) install DESTDIR='$(DIR)'
+	install -d -m0755 '$(DIR)'/usr/sbin
+	ln -s qmail-sendmail '$(DIR)'/usr/sbin/sendmail
+	ln -s qmail-sendmail '$(DIR)'/usr/sbin/mailq
+	ln -s qmail-newaliases '$(DIR)'/usr/sbin/newaliases
+	install -d -m0755 '$(DIR)'/usr/share/man/man1
+	ln -s qmail-newaliases.1.gz \
+	  '$(DIR)'/usr/share/man/man1/newaliases.1.gz
+	install -d -m0755 '$(DIR)'/usr/lib
+	ln -s ../sbin/sendmail '$(DIR)'/usr/lib/sendmail
+	install -d -m0755 '$(DIR)'/var/lib/qmail/bin
+	ln -s /usr/bin/qmailctl '$(DIR)'/var/lib/qmail/bin/qmailctl
+	install -d -m0755 '$(DIR)'/var/lib/qmail/supervise
+	ln -s /etc/qmail/qmail-send '$(DIR)'/var/lib/qmail/supervise/
+	ln -s /etc/qmail/qmail-smtpd '$(DIR)'/var/lib/qmail/supervise/
+	ln -s /etc/qmail/qmail-verify '$(DIR)'/var/lib/qmail/supervise/
+
+binary-arch:
+
+binary-indep: install qmail-run.deb
+	dpkg-gencontrol -isp -pqmail-run -P'$(DIR)'
+	dpkg -b '$(DIR)' ..
+
+binary: binary-indep binary-arch
+
+.PHONY: build clean install binary-indep binary-arch binary
+
+include debian/implicit

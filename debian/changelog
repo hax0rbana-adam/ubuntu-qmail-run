@@ -1,0 +1,233 @@
+qmail-run (2.0.2) unstable; urgency=low
+
+  * Makefile: no longer install the (dummy) newaliases program.
+  * newaliases: remove; obsolete.
+  * debian/control: Depends: fastforward (>= 1:0.51-3) instead of
+    Recommends:.
+  * debian/qmail-run.postinst: run newaliases unconditionally.
+  * debian/rules: install symlink /usr/sbin/newaliases->qmail-newaliases.
+  * debian/control: Conflicts: lsb-core.
+  * aliases: add abuse.
+  * log-qmail-verify, run-qmail-verify: new; qmail-verify service
+    directory.
+  * Makefile: install the qmail-verify service directory.
+  * qmailctl: additionally handle the qmail-verify service.
+  * tcp.smtp: add :allow,VERIFY="DEFER".
+  * debian/qmail-run.postinst: add qmail-verify service to system-wide
+    service supervision.
+  * debian/control: Depends: qmail (>= 1.06-2.1) (1st version with
+    qmail-verify functionality.
+  * debian/qmail-run.conffiles: add /etc/qmail/qmail-verify/run,
+    /etc/qmail/qmail-verify/log/run.
+  * debian/qmail-run.postrm: remove qmail-verify service.
+  * debian/README.lwq: talk about qmail-verify patch applied to the
+    qmail package; typos.
+  * debian/qmail-run.README.Debian: talk about fastforward's newaliases
+    program and symlink; typos.
+  * debian/control: typo.
+  * debian/rules: install symlink /usr/share/man/man1/newaliases.1.gz->
+    qmail-newaliases.1.gz.
+
+ -- Gerrit Pape <pape@smarden.org>  Tue, 09 Mar 2010 00:25:27 +0000
+
+qmail-run (2.0.1) unstable; urgency=low
+
+  * run-qmail-smtpd: change softlimit -m from 3000000 to 7000000 (amd64
+    requires that much, thx Joost van Baal).
+  * Makefile: no longer install newaliases into /usr/sbin/.
+  * newaliases: remove; obsolete.
+  * debian/control: Recommends: fastforward; Suggests: dot-forward.
+  * aliases, debian/qmail-run.examples: new; restored from version
+    1.1.0.
+  * debian/qmail-run.postinst: create /etc/aliases; run newaliases if
+    it exists and is executable.
+  * debian/control: Standards-Version: 3.8.0.1.
+
+ -- Gerrit Pape <pape@smarden.org>  Wed, 27 Aug 2008 20:39:00 +0000
+
+qmail-run (2.0.0) unstable; urgency=low
+
+  * Makefile, qmail-rc, run-qmail-send, run-qmail-smtpd, tcprules-smtp,
+    debian/rules, debian/qmail-run.conffiles: adapt paths.
+  * defaultdelivery: no longer utilize dot-forward.
+  * debian/implicit: update to revision a09db2e.
+  * debian/control: Depends: qmail (>> 1.06), daemontools (>> 1:0.76),
+    ucspi-tcp (>> 1:0.88), runit (>> 1.8.0-2) | daemontools-run (>>
+    1:0.76); Standards-Version: 3.7.3.0; no longer Replaces: qmail (<<
+    1.03-woody0); update long description.
+  * debian/copyright: 2008.
+  * debian/init: rename to ./qmailctl, adapt paths.
+  * Makefile: install qmailctl into /usr/bin/.
+  * debian/rules, debian/qmail-run.conffiles: no longer install
+    debian/init as /etc/init.d/qmail.
+  * log-qmail-send, log-qmail-smtpd, run-qmail-smtpd: update according
+    to LWQ 2.8.2.2; adapt paths.
+  * debian/rules: install /var/lib/qmail/supervise/, and populate with
+    symlinks to /etc/qmail/qmail-send and /etc/qmail/qmail-smtpd.
+  * tcprules-smtp, man/tcprules-smtp.8: remove; drop in favor of
+    'qmailctl cdb'.
+  * Makefile, debian/rules: no longer install tcprules-smtp,
+    tcprules-smtp.8.
+  * debian/qmail-run.postinst, debian/qmail-run.postrm: no longer run
+    'update-rc.d qmail'.
+  * Makefile, debian/qmail-run.conffiles: install defaultdelivery file
+    into /etc/qmail/.
+  * Makefile: install qmail-rc as /var/lib/qmail/rc.
+  * debian/qmail-run.postinst: no longer create /etc/aliases; don't run
+    newaliases.
+  * aliases, debian/qmail-run.examples: remove; obsolete.
+  * debian/qmail-run.preinst: new; upgrading qmail-run from unofficial
+    package is not yet supported.
+  * debian/qmail-run.postinst, debian/qmail-run.postrm: update paths;
+    use the update-service program to add and remove the qmail-send and
+    qmail-smtpd services.
+  * debian/qmail-run.postinst: create ~alias/.qmail-* files for root,
+    postmaster, mailer-daemon, abuse, if they don't exist.
+  * newaliases: new; dummy: qmail on Debian by default doesn't support
+    the /etc/aliases database.
+  * Makefile: install newaliases into /usr/sbin/.
+  * debian/control: Replaces: fastforward (<= 0.51-zarge1).
+  * debian/qmail-run.README.Debian, debian/README.lwq: adapt.
+  * upload to Debian/main.
+
+ -- Gerrit Pape <pape@smarden.org>  Thu, 24 Apr 2008 19:00:36 +0000
+
+qmail-run (1.1.0) sarge; urgency=low
+
+  * debian/README.Debian: rename to debian/qmail-run.README.Debian; add note
+    about doublebounces should be delivered to a local mailbox (thx Joost van
+    Baal).
+  * debian/control: no longer Build-Depends: dephelper; remove
+    Standards-Version.
+  * debian/rules: stop using debhelper, use implicit rules.
+  * debian/implicit: new; implicit Makefile rules.
+  * debian/preinst: rename to debian/qmail-run.preinst; cleanup; no longer
+    use debhelper.
+  * debian/postinst: rename to debian/qmail-run.postinst; cleanup; no longer
+    use debhelper; check for hostname -f returning a hostname containing a
+    dot.
+  * debian/docs, debian/examples: rename to debian/qmail-run.*.
+  * debian/conffiles: rename to debian/qmail-run.conffiles; add
+    /etc/init.d/qmail.
+  * debian/dirs, debian/links: remove; obsolete.
+  * Makefile: minor; no longer chmod +t service directories.
+  * debian/copyright: change license from GPL to 3-clause BSD.
+  * man/tcprules-smtp.8: typo.
+
+ -- Gerrit Pape <pape@smarden.org>  Fri, 16 Apr 2004 09:13:38 +0000
+
+qmail-run (1.0.0) woody; urgency=low
+
+  * bump version for release.
+
+ -- Gerrit Pape <pape@smarden.org>  Tue,  9 Jul 2002 11:05:21 +0200
+
+qmail-run (0.3.1) woody; urgency=low
+
+  * debian/postinst: removed extra code for upgrade from versions << 0.2.0
+    (nearly one year ago, potato has >= 0.2.0).
+
+ -- Gerrit Pape <pape@smarden.org>  Mon,  8 Apr 2002 14:53:54 +0200
+
+qmail-run (0.3.0) woody; urgency=low
+
+  * init: correct description on qmailctl cdb: '/etc/qmail/tcp.smtp'
+  * debian/control: Architecture: all; Depends: daemontools (>> 0.76-woody0).
+  * debian/postinst: avoid absolute paths; use 'qmailctl cdb'.
+  * doc: README.Debian, README.upgrade: splogger is used by default qmail-rc.
+
+ -- Gerrit Pape <pape@smarden.org>  Sun, 17 Mar 2002 17:38:31 +0100
+
+qmail-run (0.2.7) woody; urgency=low
+
+  * tcprules-smtp: chmod 644 tcp.smtp.cdb.
+  * doc: README.lwq: splogger is used by default qmail-rc.
+
+ -- Gerrit Pape <pape@smarden.org>  Thu,  8 Nov 2001 10:30:56 +0100
+
+qmail-run (0.2.6) woody; urgency=low
+
+  * woody package; new Standards-Version: 3.5.2.
+  * control: replaces qmail (<< 1.03-woody0).
+  * /usr/sbin/mailq -> qmail-sendmail added.
+  * use mktemp in tcprules-smtp.
+  * qmailctl script from http://lifewithqmail.org (2.8.2.1.) added to
+    path and init scripts.
+  * use lwq's concurrencyincoming file.
+  * lwq's qmail-rc, defaultdelivery included as examples.
+  * doc: README.lwq added.
+
+ -- Gerrit Pape <pape@smarden.org>  Fri, 26 Oct 2001 18:34:18 +0200
+
+qmail-run (0.2.0) stable; urgency=low
+
+  * links /var/service/qmail-* are no longer in this package's file list but
+    created by postinst after the deb is fully unpacked.
+  * service directory qmail-start changed to qmail-send, using multilog(8)
+    instead of syslog, notify to root is mailed on upgrade from version
+    0.[01].x, see README.upgrade.
+  * service qmail-smtpd uses multilog instead of syslog.
+  * tcprules-stmp added, see man page tcprules-smtp(8) for description.
+
+ -- Gerrit Pape <pape@innominate.com>  Mon, 23 Apr 2001 22:04:40 +0200
+
+qmail-run (0.1.1) stable; urgency=low
+
+  * postrm added, supervise processes will stop and exit on remove or purge.
+
+ -- Gerrit Pape <pape@innominate.com>  Fri, 16 Mar 2001 11:25:54 +0100
+
+qmail-run (0.1.0) stable; urgency=low
+
+  * depends on procmail.
+
+ -- Gerrit Pape <pape@innominate.com>  Thu,  1 Feb 2001 09:30:16 +0100
+
+qmail-run (0.0.7) unstable; urgency=low
+
+  * cleanup.
+
+ -- Gerrit Pape <pape@innominate.com>  Mon, 18 Dec 2000 16:07:50 +0100
+
+qmail-run (0.0.6) unstable; urgency=low
+
+  * depends on daemontools-run.
+
+ -- Gerrit Pape <pape@innominate.de>  Mon, 14 Aug 2000 18:06:09 +0200
+
+qmail-run (0.0.5) unstable; urgency=low
+
+  * call tcprules for /etc/qmail/tcp.smtp in postconfig.
+
+ -- Gerrit Pape <pape@innominate.de>  Wed, 19 Jul 2000 09:39:56 +0200
+
+qmail-run (0.0.4) unstable; urgency=low
+
+  * description in control-file added.
+
+ -- Gerrit Pape <pape@innominate.de>  Mon, 19 Jun 2000 14:29:02 +0200
+
+qmail-run (0.0.3) unstable; urgency=low
+
+  * now using /var/service directory, svscan is started by package
+    daemontools.
+
+ -- Gerrit Pape <pape@innominate.de>  Mon, 15 May 2000 11:22:08 +0200
+
+qmail-run (0.0.2) unstable; urgency=low
+
+  * handling of /etc/mailname added, default content is the output of
+    hostname -f.
+  * /var/qmail/control/defaulthost is created from /etc/mailname.
+
+ -- Gerrit Pape <pape@innominate.de>  Tue,  2 May 2000 09:11:11 +0200
+
+qmail-run (0.0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Gerrit Pape <pape@innominate.de>  Mon,  1 May 2000 15:15:00 +0200
+
+Local variables:
+mode: debian-changelog
+End:
