@@ -1,3 +1,9 @@
+qmail-run (2.0.2-0.2) xenial; urgency=low
+
+  * bump version for xenial build
+
+ -- Ryan Buterbaugh <ryan@buterbaugh.org>  Sat, 13 Feb 2016 21:30:30 +0000
+
 qmail-run (2.0.2-0.1) xenial; urgency=low
 
   * increase softlimit for TLS changes
